@@ -859,6 +859,8 @@ class icit_srdb {
                 return serialize( $data );
             }
 
+        } catch ( Error $error ) {
+	        $this->add_error( $error->getMessage(), 'results' );
         } catch ( Exception $error ) {
             $this->add_error( $error->getMessage() . ':: This is usually caused by a plugin storing classes as a
 		    serialised string which other PHP classes can\'t then access. It is not possible to unserialise this data
@@ -972,7 +974,7 @@ class icit_srdb {
                 $report['tables'] ++;
 
                 // get primary key and columns
-                list( $primary_key, $columns ) = $this->get_columns( $table );
+                [ $primary_key, $columns ] = $this->get_columns( $table );
 
                 if ( $primary_key === null || empty( $primary_key ) ) {
                     $this->add_error( "The table \"{$table}\" has no primary key. Changes will have to be made manually.",
